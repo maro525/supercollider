@@ -54,3 +54,52 @@ var num = 8;
 	SinOsc.ar([ExpRand(50, 800), ExpRand(50, 800)], pi.rand, 1.0/num)
 })}.play;
 )
+
+(
+var num = 8;
+{Mix.arFill(num, {
+	var freqR, freqL;
+	freqL = 220 * [1.0, 3.0/2.0, 4.0/3.0].choose;
+	freqR = 220 * [1.0, 3.0/2.0, 4.0/3.0].choose;
+	SinOsc.ar([freqL, freqR], pi.rand, 1.0/num);
+})}.play;
+)
+
+(
+	var num = 8;
+	{ Mix.arFill(num, {
+		var freqR, freqL;
+		freqL = 220 * [1.0, 3.0/2.0, 4.0/3.0].choose * [1.0, 3.0/2.0, 4.0/3.0].choose + 10.0.rand;
+		freqR = 220 * [1.0, 3.0/2.0, 4.0/3.0].choose * [1.0, 3.0/2.0, 4.0/3.0].choose + 10.0.rand;
+		SinOsc.ar([freqL, freqR], pi.rand, 1.0/num);
+	})}.play;
+)
+
+(
+var num = 32;
+{ Mix.arFill(num, {
+	var freqR, freqL;
+	freqL = 440 * (1.5 ** rrand(1,6)) * (0.5 ** rrand(1, 8));
+	freqR = 442 * (1.5 ** rrand(1,6)) * (0.5 ** rrand(1, 8));
+	SinOsc.ar([freqL, freqR], pi.rand, 1.0/num);
+})}.play;
+)
+
+// synth def
+{SinOsc.ar}.play;
+
+SynthDef("sine", {Out.ar(0, SinOsc.ar)}).play;
+SynthDef("sine", {Out.ar(1, SinOsc.ar)}).play;
+
+SynthDef.new("test-SinOsc", {
+	Out.ar(0, SinOsc.ar(440, 0, 0.2))
+}).add;
+
+Synth("test-SinOsc");
+
+// melody
+Pbind(
+	\midinote, Pseq([72, 72, 79, 79, 81, 81, 79], 1),
+	\dur, Pseq([0.5], 6) ++ Pseq([1.0], 1)
+).play;
+
